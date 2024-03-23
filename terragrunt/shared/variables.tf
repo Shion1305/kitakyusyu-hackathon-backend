@@ -1,5 +1,6 @@
 variable "project_id" {
   description = "The GCP project ID."
+  default     = "kyusyu-hackathon"
 }
 
 variable "region" {

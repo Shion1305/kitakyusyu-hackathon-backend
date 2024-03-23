@@ -1,11 +1,11 @@
-name: "Run terraform plan on PR submission"
+name: "Run Terragrunt Apply on main branch push"
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - opened
-      - synchronize
+    path:
+      - 'terragrunt/**'
+      - '.github/workflows/terragrunt-apply.yml'
 jobs:
   run-terraform-plan:
     runs-on: ubuntu-latest

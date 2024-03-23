@@ -1,4 +1,4 @@
-name: "Run terraform plan on PR submission"
+name: "Run terragrunt plan on PR submission"
 on:
   pull_request:
     branches:
@@ -6,6 +6,9 @@ on:
     types:
       - opened
       - synchronize
+    paths:
+      - 'terragrunt/**'
+      - '.github/workflows/terragrunt-plan.yml'
 jobs:
   run-terraform-plan:
     runs-on: ubuntu-latest

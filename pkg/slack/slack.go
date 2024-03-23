@@ -61,7 +61,7 @@ func (s Slack) CreateInviteLink(channelID string) (string, error) {
 }
 
 func (s Slack) InviteGuestToConversation(
-	channelID, firstname, lastname, email string,
-) error {
-	return s.client.InviteGuest(s.teamID, channelID, firstname, lastname, email)
+	channelID string, email []string,
+) (string, bool, error) {
+	return s.client.InviteSharedEmailsToConversation(channelID, email...)
 }

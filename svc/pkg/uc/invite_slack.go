@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"kitakyusyu-hackathon/pkg/slack"
+	"log"
 )
 
 type InviteSlack struct {
@@ -51,23 +52,15 @@ func (uc InviteSlack) Do(input InviteSlackInput) (*InviteSlackOutput, error) {
 		}
 	}
 
-	errInfo := make(map[string]error)
-	for _, g := range input.GuestInfo {
-		// invite guest
-		if err := uc.slack.InviteGuestToConversation(channel.ID, g.Firstname, g.Lastname, g.Email); err != nil {
-			errInfo[g.Email] = err
-		}
+	guests := make([]string, 0, len(input.GuestInfo))
+	for _, guest := range input.GuestInfo {
+		guests = append(guests, guest.Email)
 	}
-	if len(errInfo) > 0 {
-		errMsg := "failed to invite guests: "
-		for email, err := range errInfo {
-			errMsg += email + ":" + err.Error() + ", "
-		}
-		return &InviteSlackOutput{
-			ChannelName: input.ChannelName,
-			ChannelLink: genConversationLink(channel.ID),
-		}, errors.New(errMsg)
+	conversation, b, err := uc.slack.InviteGuestToConversation(channel.ID, guests)
+	if err != nil {
+		log.Printf("failed to invite guest to channel: %v, %v, %v", conversation, b, err)
 	}
+
 	return &InviteSlackOutput{
 		ChannelName: input.ChannelName,
 		ChannelLink: genConversationLink(channel.ID),

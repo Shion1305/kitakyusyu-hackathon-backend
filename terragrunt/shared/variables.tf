@@ -12,7 +12,3 @@ variable "zone" {
   description = "The GCP zone."
   default     = "asia-northeast1-a"
 }
-
-variable "access_token" {
-  description = "The access token for the GCP service account."
-}

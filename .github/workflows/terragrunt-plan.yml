@@ -51,20 +51,15 @@ jobs:
       - name: Check terragrunt fmt
         working-directory: terragrunt/envs/dev
         run: terragrunt fmt -check
-        env:
-          TF_VAR_access_token: ${{ steps.auth.outputs.access_token }}
 
       - name: Terragrunt validate
         working-directory: terragrunt/envs/dev
         run: terragrunt validate
-        env:
-          TF_VAR_access_token: ${{ steps.auth.outputs.access_token }}
 
       - name: Terragrunt plan
         working-directory: terragrunt/envs/dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TF_VAR_access_token: ${{ steps.auth.outputs.access_token }}
         run: |
           chmod 755 $GITHUB_WORKSPACE/.github/scripts/tfwrapper.sh
           terragrunt run-all plan --terragrunt-non-interactive --terragrunt-tfpath $GITHUB_WORKSPACE/.github/scripts/tfwrapper.sh

@@ -13,14 +13,6 @@ jobs:
       contents: 'read'
       id-token: 'write'
     steps:
-      - name: Login to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          token_format: access_token
-          workload_identity_provider: 'projects/435876017528/locations/global/workloadIdentityPools/default-pool/providers/provider-github'
-          service_account: 'gh-terraform@kyusyu-hackathon.iam.gserviceaccount.com'
-
       - name: setup repository
         uses: actions/checkout@v4
 
@@ -45,6 +37,14 @@ jobs:
                     -filter-mode=nofilter \
                     -fail-on-error
 
+      - name: Login to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: access_token
+          workload_identity_provider: 'projects/435876017528/locations/global/workloadIdentityPools/default-pool/providers/provider-github'
+          service_account: 'gh-terraform@kyusyu-hackathon.iam.gserviceaccount.com'
+
       - name: Check terragrunt fmt
         working-directory: terragrunt/envs/dev
         run: terragrunt fmt -check
@@ -57,7 +57,6 @@ jobs:
         working-directory: terragrunt/envs/dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TF_VAR_access_token: ${{ steps.auth.outputs.access_token }}
         run: |
           chmod 755 $GITHUB_WORKSPACE/.github/scripts/tfwrapper.sh
           terragrunt run-all apply --terragrunt-non-interactive --terragrunt-tfpath $GITHUB_WORKSPACE/.github/scripts/tfwrapper.sh

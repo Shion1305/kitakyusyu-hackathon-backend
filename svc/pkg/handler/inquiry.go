@@ -23,12 +23,14 @@ func NewInquiryHandler() *InquiryHandler {
 
 func (h *InquiryHandler) HandleInquiry() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		log.Println("inquiry request")
 		data := schema.InquiryData{}
 		if err := c.ShouldBindJSON(&data); err != nil {
 			c.JSON(400, gin.H{
 				"status":  false,
 				"message": err.Error(),
 			})
+			log.Printf("failed to bind json, err: %v\n", err)
 			return
 		}
 
@@ -37,8 +39,11 @@ func (h *InquiryHandler) HandleInquiry() gin.HandlerFunc {
 				"status":  false,
 				"message": err.Error(),
 			})
+			log.Printf("validation error: %v\n", err)
 			return
 		}
+
+		log.Printf("inquiry data: %+v\n", data)
 
 		if data.UseSlack {
 			guests := make([]uc.GuestInfo, 0, len(*data.SlackInfo))

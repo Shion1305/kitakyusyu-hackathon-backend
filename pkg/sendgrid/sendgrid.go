@@ -23,6 +23,7 @@ func (s *Sendgrid) SendMail() {
 }
 
 func (s *Sendgrid) SendMailNotify(name, to string) {
+	log.Printf("sending mail to %s\n", to)
 	m := mail.NewV3Mail()
 	m.SetFrom(mail.NewEmail("JCHキャンペーン運営事務局", "shion1305@proton.me"))
 	p := mail.NewPersonalization()
@@ -41,6 +42,7 @@ func (s *Sendgrid) SendMailNotify(name, to string) {
 }
 
 func (s *Sendgrid) SendMailSlack(name, to string) {
+	log.Printf("sending mail to %s\n", to)
 	m := mail.NewV3Mail()
 	m.SetFrom(mail.NewEmail("JCHキャンペーン運営事務局", "shion1305@proton.me"))
 	p := mail.NewPersonalization()

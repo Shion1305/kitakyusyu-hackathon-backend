@@ -20,7 +20,7 @@ type Slack struct {
 	ClientSecret      string `yaml:"client_secret"`
 	SigningSecret     string `yaml:"signing_secret"`
 	VerificationToken string `yaml:"verification_token"`
-	UserOAuthToken    string `yaml:"user_oauth_token"`
+	BotOAuthToken     string `yaml:"bot_oauth_token"`
 	TeamID            string `yaml:"team_id"`
 }
 

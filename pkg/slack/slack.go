@@ -11,7 +11,7 @@ type Slack struct {
 	clientSecret      string
 	signingSecret     string
 	verificationToken string
-	userOauthToken    string
+	botOAuthToken     string
 	teamID            string
 	client            *slack.Client
 }
@@ -19,14 +19,14 @@ type Slack struct {
 func NewSlack() Slack {
 	conf := config.Get()
 
-	client := slack.New(conf.Slack.UserOAuthToken)
+	client := slack.New(conf.Slack.BotOAuthToken)
 	return Slack{
 		appID:             conf.Slack.AppID,
 		clientID:          conf.Slack.ClientID,
 		clientSecret:      conf.Slack.ClientSecret,
 		signingSecret:     conf.Slack.SigningSecret,
 		verificationToken: conf.Slack.VerificationToken,
-		userOauthToken:    conf.Slack.UserOAuthToken,
+		botOAuthToken:     conf.Slack.BotOAuthToken,
 		teamID:            conf.Slack.TeamID,
 		client:            client,
 	}

@@ -37,9 +37,9 @@ jobs:
           password: ${{ steps.auth.outputs.access_token }}
           registry: asia-northeast1-docker.pkg.dev
 
-#       - name: create .env file
-#         run: |
-#           echo "${{ secrets.ENV_VARS }}" > .env
+      - name: create .env file
+        run: |
+          echo "${{ secrets.ENV_VARS }}" > .env
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -49,20 +49,20 @@ jobs:
           file: ./cloudrun/Dockerfile
           context: ./
 
-#       - name: Download Cloud Run Service YAML
-#         run: |
-#           gcloud run services describe frontend-release --format yaml --region asia-northeast1 > ./cloudrun/service-frontend-release.yaml
-#
-#       # replace github_sha field to latest commit sha. Changing spec.template is required to deploy new revision.
-#       # reference: https://cloud.google.com/run/docs/deploying?hl=ja#revision -- check yaml tab.
-#       - name: Change some property of service-frontend-release.yaml
-#         run: |
-#           sed -i "s/github_sha: .*/github_sha: ${{ github.sha }}/g" ./cloudrun/service-frontend-release.yaml
-#
-#       - name: Deploy to Cloud Run
-#         id: deploy
-#         uses: google-github-actions/deploy-cloudrun@v2
-#         with:
-#           region: "asia-northeast1"
-#           metadata: "./cloudrun/service-frontend-release.yaml"
-#           env_vars_file: ".env"
+      - name: Download Cloud Run Service YAML
+        run: |
+          gcloud run services describe main --format yaml --region asia-northeast1 > ./cloudrun/service.yaml
+
+      # replace github_sha field to latest commit sha. Changing spec.template is required to deploy new revision.
+      # reference: https://cloud.google.com/run/docs/deploying?hl=ja#revision -- check yaml tab.
+      - name: Change some property of service-frontend-release.yaml
+        run: |
+          sed -i "s/github_sha: .*/github_sha: ${{ github.sha }}/g" ./cloudrun/service.yaml
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          region: "asia-northeast1"
+          metadata: "./cloudrun/service.yaml"
+          env_vars_file: ".env"

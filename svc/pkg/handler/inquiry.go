@@ -84,7 +84,7 @@ func (h InquiryHandler) handleSlack(data schema.InquiryData) {
 	timeStr := time.Now().Format("200601021504")
 	inviteInput := uc.InviteSlackInput{
 		ChannelName: fmt.Sprintf("%s-%s様", timeStr, data.CompanyName),
-		StaffIDs:    []string{},
+		StaffIDs:    []string{"U04936U1UEB"},
 		GuestInfo:   guests,
 	}
 	inviteResult, err := h.inviteUC.Do(inviteInput)

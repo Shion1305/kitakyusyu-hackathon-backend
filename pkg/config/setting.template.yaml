@@ -4,7 +4,7 @@ slack:
   client_secret:
   signing_secret:
   verification_token:
-  app_token:
+  user_oauth_token:
   team_id:
 sendgrid:
   api_key:

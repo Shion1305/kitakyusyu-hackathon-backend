@@ -9,6 +9,7 @@ import (
 	"kitakyusyu-hackathon/svc/pkg/schema"
 	"kitakyusyu-hackathon/svc/pkg/uc"
 	"log"
+	"time"
 )
 
 type InquiryHandler struct {
@@ -81,8 +82,10 @@ func (h InquiryHandler) handleSlack(data schema.InquiryData) {
 		Firstname: data.Firstname,
 		Lastname:  data.Lastname,
 	})
+
+	timeStr := time.Now().Format("200601021504")
 	inviteInput := uc.InviteSlackInput{
-		ChannelName: data.CompanyName,
+		ChannelName: fmt.Sprintf("%s-%s様", timeStr, data.CompanyName),
 		StaffIDs:    []string{},
 		GuestInfo:   guests,
 	}

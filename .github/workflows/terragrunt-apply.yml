@@ -7,7 +7,7 @@ on:
       - 'terragrunt/**'
       - '.github/workflows/terragrunt-apply.yml'
 jobs:
-  run-terraform-plan:
+  run-terraform-apply:
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'

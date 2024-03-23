@@ -10,7 +10,8 @@ import (
 var conf *Config
 
 type Config struct {
-	Slack Slack `yaml:"slack"`
+	Slack    Slack    `yaml:"slack"`
+	SendGrid SendGrid `yaml:"sendgrid"`
 }
 
 type Slack struct {
@@ -21,6 +22,10 @@ type Slack struct {
 	VerificationToken string `yaml:"verification_token"`
 	AppToken          string `yaml:"app_token"`
 	TeamID            string `yaml:"team_id"`
+}
+
+type SendGrid struct {
+	APIKey string `yaml:"api_key"`
 }
 
 func init() {

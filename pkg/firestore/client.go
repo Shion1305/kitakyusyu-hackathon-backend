@@ -13,7 +13,7 @@ var (
 func New() *firestore.Client {
 	if client == nil {
 		ctx := context.Background()
-		c, err := firestore.NewClient(ctx, "kitakyusyu-hackathon")
+		c, err := firestore.NewClient(ctx, "kyusyu-hackathon")
 		if err != nil {
 			log.Fatalf("firebase.NewClient err: %v", err)
 		}

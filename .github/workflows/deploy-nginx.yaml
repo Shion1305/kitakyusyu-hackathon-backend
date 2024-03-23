@@ -49,8 +49,8 @@ jobs:
         with:
           push: true
           tags: asia-northeast1-docker.pkg.dev/kyusyu-hackathon/main/nginx:latest
-          context: .
           file: ./docker/nginx/Dockerfile
+          context: ./docker/nginx
 
 #       - name: Download Cloud Run Service YAML
 #         run: |

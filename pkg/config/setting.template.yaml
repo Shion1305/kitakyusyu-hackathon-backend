@@ -1,0 +1,8 @@
+slack:
+  app_id:
+  client_id:
+  client_secret:
+  signing_secret:
+  verification_token:
+  app_token:
+  team_id:

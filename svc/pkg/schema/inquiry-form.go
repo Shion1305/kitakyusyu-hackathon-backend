@@ -32,8 +32,18 @@ func (i InquiryData) Validate() error {
 	if i.EmailAddress == "" {
 		return errors.New("email address is required")
 	}
-	if i.UseSlack && (i.SlackInfo == nil || len(*i.SlackInfo) == 0) {
-		return errors.New("slack info is required")
+	if i.UseSlack && i.SlackInfo != nil {
+		for _, s := range *i.SlackInfo {
+			if s.Firstname == "" {
+				return errors.New("slack firstname is required")
+			}
+			if s.Lastname == "" {
+				return errors.New("slack lastname is required")
+			}
+			if s.Email == "" {
+				return errors.New("slack email is required")
+			}
+		}
 	}
 	return nil
 }

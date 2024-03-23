@@ -33,8 +33,8 @@ type InviteSlackOutput struct {
 }
 
 func (uc InviteSlack) Do(input InviteSlackInput) (*InviteSlackOutput, error) {
-	if len(input.StaffIDs) == 0 || len(input.GuestInfo) == 0 {
-		return nil, errors.New("no staff or guest info provided")
+	if len(input.GuestInfo) == 0 {
+		return nil, errors.New("no guest info provided")
 	}
 
 	// first create conversation (channel)
@@ -47,9 +47,10 @@ func (uc InviteSlack) Do(input InviteSlackInput) (*InviteSlackOutput, error) {
 		return nil, fmt.Errorf("failed to create channel: %w", err)
 	}
 
-	// then issue invitation link
-	if err := uc.slack.InviteToChannel(channel.ID, input.StaffIDs); err != nil {
-		return nil, fmt.Errorf("failed to invite staff to channel: %w", err)
+	if len(input.StaffIDs) > 0 {
+		if err := uc.slack.InviteToChannel(channel.ID, input.StaffIDs); err != nil {
+			return nil, fmt.Errorf("failed to invite staff to channel: %w", err)
+		}
 	}
 
 	errInfo := make(map[string]error)

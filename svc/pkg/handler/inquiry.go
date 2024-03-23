@@ -83,7 +83,7 @@ func (h InquiryHandler) handleSlack(data schema.InquiryData) {
 	})
 	inviteInput := uc.InviteSlackInput{
 		ChannelName: data.CompanyName,
-		StaffIDs:    []string{"U04936U1UEB"},
+		StaffIDs:    []string{},
 		GuestInfo:   guests,
 	}
 	inviteResult, err := h.inviteUC.Do(inviteInput)

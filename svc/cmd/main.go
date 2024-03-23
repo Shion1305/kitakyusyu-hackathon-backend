@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"kitakyusyu-hackathon/pkg/firestore"
 	"kitakyusyu-hackathon/svc/pkg/handler"
 	"kitakyusyu-hackathon/svc/pkg/middleware"
 	"log"
@@ -9,9 +10,11 @@ import (
 
 func main() {
 	e := gin.Default()
-	inquiryHandler := handler.NewInquiryHandler()
+	fs := firestore.New()
+	inquiryHandler := handler.NewInquiryHandler(fs)
 	cors := middleware.NewCORSMiddleware()
 	e.Use(cors.Handle)
+
 	rg := e.Group("/api/v1").
 		Use(cors.Handle)
 	rg.POST("/inquiry", inquiryHandler.HandleInquiry())

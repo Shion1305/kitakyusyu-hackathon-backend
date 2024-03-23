@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"cloud.google.com/go/firestore"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"kitakyusyu-hackathon/pkg/sendgrid"
@@ -15,14 +16,16 @@ type InquiryHandler struct {
 	slackClient *slack.Slack
 	inviteUC    *uc.InviteSlack
 	sendgrid    *sendgrid.Sendgrid
+	fs          *firestore.Client
 }
 
-func NewInquiryHandler() *InquiryHandler {
+func NewInquiryHandler(fs *firestore.Client) *InquiryHandler {
 	s := slack.NewSlack()
 	return &InquiryHandler{
 		slackClient: &s,
 		inviteUC:    uc.NewInviteSlack(s),
 		sendgrid:    sendgrid.NewSendgrid(),
+		fs:          fs,
 	}
 }
 
@@ -49,6 +52,11 @@ func (h *InquiryHandler) HandleInquiry() gin.HandlerFunc {
 		}
 
 		log.Printf("inquiry data: %+v\n", data)
+
+		_, _, err := h.fs.Collection("inquiries").Add(c, data)
+		if err != nil {
+			log.Printf("failed to add inquiry to firestore, err: %v\n", err)
+		}
 
 		if data.UseSlack {
 			h.handleSlack(data)

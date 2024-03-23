@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"kitakyusyu-hackathon/pkg/config"
 	"kitakyusyu-hackathon/pkg/sendgrid"
 	"kitakyusyu-hackathon/pkg/slack"
 	"kitakyusyu-hackathon/svc/pkg/schema"
@@ -20,10 +19,9 @@ type InquiryHandler struct {
 
 func NewInquiryHandler() *InquiryHandler {
 	s := slack.NewSlack()
-	conf := config.Get()
 	return &InquiryHandler{
 		slackClient: &s,
-		inviteUC:    uc.NewInviteSlack(s, conf.Slack.TeamID),
+		inviteUC:    uc.NewInviteSlack(s),
 		sendgrid:    sendgrid.NewSendgrid(),
 	}
 }

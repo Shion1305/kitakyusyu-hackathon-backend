@@ -7,12 +7,11 @@ import (
 )
 
 type InviteSlack struct {
-	slack  slack.Slack
-	teamID string
+	slack slack.Slack
 }
 
-func NewInviteSlack(slack slack.Slack, teamID string) *InviteSlack {
-	return &InviteSlack{slack: slack, teamID: teamID}
+func NewInviteSlack(slack slack.Slack) *InviteSlack {
+	return &InviteSlack{slack: slack}
 }
 
 type InviteSlackInput struct {
@@ -41,7 +40,6 @@ func (uc InviteSlack) Do(input InviteSlackInput) (*InviteSlackOutput, error) {
 	channel, err := uc.slack.CreateChannel(slack.CreateConversationParams{
 		ChannelName: input.ChannelName,
 		IsPrivate:   true,
-		TeamID:      uc.teamID,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create channel: %w", err)

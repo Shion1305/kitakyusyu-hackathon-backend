@@ -27,6 +27,7 @@ func NewSlack() Slack {
 		signingSecret:     conf.Slack.SigningSecret,
 		verificationToken: conf.Slack.VerificationToken,
 		userOauthToken:    conf.Slack.UserOAuthToken,
+		teamID:            conf.Slack.TeamID,
 		client:            client,
 	}
 }
@@ -34,7 +35,6 @@ func NewSlack() Slack {
 type CreateConversationParams struct {
 	ChannelName string
 	IsPrivate   bool
-	TeamID      string
 }
 
 type CreateConversationResponse struct {
@@ -45,7 +45,7 @@ func (s Slack) CreateChannel(param CreateConversationParams) (*slack.Channel, er
 		slack.CreateConversationParams{
 			ChannelName: param.ChannelName,
 			IsPrivate:   param.IsPrivate,
-			TeamID:      param.TeamID,
+			TeamID:      s.teamID,
 		})
 }
 

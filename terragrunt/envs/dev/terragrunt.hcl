@@ -1,9 +1,14 @@
 remote_state {
   backend = "gcs"
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite_terragrunt"
+  }
   config = {
-    bucket  = "kyusyu-hackathon-terraform"
-    prefix  = "${path_relative_to_include()}/terraform.state"
-    region  = "asia-northeast1"
+    project = "kyusyu-hackathon"
+    bucket = "kitakyushu-hackathon-terraform"
+    prefix = "${path_relative_to_include()}/terraform.tfstate"
+    location = "asia-northeast1"
   }
 }
 

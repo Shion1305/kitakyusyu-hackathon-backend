@@ -28,6 +28,7 @@ func (s *Sendgrid) SendMailNotify(name, to string) {
 	p := mail.NewPersonalization()
 	p.AddTos(mail.NewEmail(name+" 様", to))
 	m.SetTemplateID("d-9ea807833b634a778084e55411b0cbcf")
+	m.AddPersonalizations(p)
 
 	req := sendgrid.GetRequest(s.api_key, "/v3/mail/send", "https://api.sendgrid.com")
 	req.Method = "POST"
@@ -45,6 +46,7 @@ func (s *Sendgrid) SendMailSlack(name, to string) {
 	p := mail.NewPersonalization()
 	p.AddTos(mail.NewEmail(name+" 様", to))
 	m.SetTemplateID("d-9ea807833b634a778084e55411b0cbcf")
+	m.AddPersonalizations(p)
 
 	req := sendgrid.GetRequest(s.api_key, "/v3/mail/send", "https://api.sendgrid.com")
 	req.Method = "POST"

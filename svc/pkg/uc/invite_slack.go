@@ -44,12 +44,12 @@ func (uc InviteSlack) Do(input InviteSlackInput) (*InviteSlackOutput, error) {
 		TeamID:      uc.teamID,
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create channel: %w", err)
 	}
 
 	// then issue invitation link
 	if err := uc.slack.InviteToChannel(channel.ID, input.StaffIDs); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to invite staff to channel: %w", err)
 	}
 
 	errInfo := make(map[string]error)

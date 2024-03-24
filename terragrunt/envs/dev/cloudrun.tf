@@ -7,13 +7,14 @@ resource "google_cloud_run_service" "main1" {
       "cloud.googleapis.com/location" = "asia-northeast1"
     }
     annotations = {
-      "run.googleapis.com/client-name"    = "cloud-console"
-      "serving.knative.dev/creator"       = "shion1305@a.shion.pro"
-      "serving.knative.dev/lastModifier"  = "shion1305@a.shion.pro"
-      "run.googleapis.com/operation-id"   = "c4484fff-7201-42fa-b943-c93af66e669c"
-      "run.googleapis.com/ingress"        = "all"
-      "run.googleapis.com/ingress-status" = "all"
-      "run.googleapis.com/minScale"       = "0"
+      "run.googleapis.com/client-name"     = "cloud-console"
+      "serving.knative.dev/creator"        = "shion1305@a.shion.pro"
+      "serving.knative.dev/lastModifier"   = "shion1305@a.shion.pro"
+      "run.googleapis.com/operation-id"    = "c4484fff-7201-42fa-b943-c93af66e669c"
+      "run.googleapis.com/ingress"         = "all"
+      "run.googleapis.com/ingress-status"  = "all"
+      "run.googleapis.com/minScale"        = "0"
+      "run.googleapis.com/security-policy" = google_compute_security_policy.policy.name
     }
   }
 
@@ -107,4 +108,23 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
   service  = google_cloud_run_service.main1.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
+}
+
+
+
+resource "google_compute_security_policy" "policy" {
+  name = "cloud-armor-policy"
+
+  rule {
+    action   = "allow"
+    priority = "2147483647"
+    match {
+      versioned_expr = "SRC_IPS_V1"
+      config {
+        src_ip_ranges = ["*"]
+      }
+    }
+    description = "default rule"
+  }
+
 }

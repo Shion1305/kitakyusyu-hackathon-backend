@@ -7,20 +7,20 @@ resource "google_cloud_run_service" "main1" {
       "cloud.googleapis.com/location" = "asia-northeast1"
     }
     annotations = {
-      "run.googleapis.com/client-name"      = "cloud-console"
-      "serving.knative.dev/creator"         = "shion1305@a.shion.pro"
-      "serving.knative.dev/lastModifier"    = "shion1305@a.shion.pro"
-      "run.googleapis.com/operation-id"     = "c4484fff-7201-42fa-b943-c93af66e669c"
-      "run.googleapis.com/ingress"          = "all"
-      "run.googleapis.com/ingress-status"   = "all"
-      "run.googleapis.com/minScale"         = "0"
+      "run.googleapis.com/client-name"    = "cloud-console"
+      "serving.knative.dev/creator"       = "shion1305@a.shion.pro"
+      "serving.knative.dev/lastModifier"  = "shion1305@a.shion.pro"
+      "run.googleapis.com/operation-id"   = "c4484fff-7201-42fa-b943-c93af66e669c"
+      "run.googleapis.com/ingress"        = "all"
+      "run.googleapis.com/ingress-status" = "all"
+      "run.googleapis.com/minScale"       = "0"
     }
   }
 
   template {
     metadata {
       labels = {
-        "client.knative.dev/nonce" = "5754c3e0-ad0a-4364-9d17-45ff94238904"
+        "client.knative.dev/nonce"            = "5754c3e0-ad0a-4364-9d17-45ff94238904"
         "run.googleapis.com/startupProbeType" = "Default"
       }
       annotations = {
@@ -49,8 +49,8 @@ resource "google_cloud_run_service" "main1" {
           }
         }
         startup_probe {
-          timeout_seconds  = 240
-          period_seconds   = 240
+          timeout_seconds   = 240
+          period_seconds    = 240
           failure_threshold = 1
           tcp_socket {
             port = 80

@@ -19,6 +19,7 @@ func main() {
 	rg := e.Group("/api/v1").
 		Use(cors.Handle)
 	rg.POST("/inquiry", inquiryHandler.HandleInquiry())
+	rg.GET("/chat", chatHandler.Handle())
 	rg.POST("/chat", chatHandler.Handle())
 	e.NoRoute(func(c *gin.Context) {
 		log.Println("NoRoute")

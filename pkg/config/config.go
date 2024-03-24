@@ -12,6 +12,7 @@ var conf *Config
 type Config struct {
 	Slack    Slack    `yaml:"slack"`
 	SendGrid SendGrid `yaml:"sendgrid"`
+	OpenAI   OpenAI   `yaml:"openai"`
 }
 
 type Slack struct {
@@ -26,6 +27,12 @@ type Slack struct {
 
 type SendGrid struct {
 	APIKey string `yaml:"api_key"`
+}
+
+type OpenAI struct {
+	EndPoint string `yaml:"endpoint"`
+	APIKey   string `yaml:"api_key"`
+	Model    string `yaml:"model"`
 }
 
 func init() {

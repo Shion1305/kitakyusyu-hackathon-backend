@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"kitakyusyu-hackathon/pkg/sendgrid"
 	"kitakyusyu-hackathon/pkg/slack"
+	"kitakyusyu-hackathon/svc/pkg/gas"
 	"kitakyusyu-hackathon/svc/pkg/schema"
 	"kitakyusyu-hackathon/svc/pkg/uc"
 	"log"
@@ -17,15 +18,18 @@ type InquiryHandler struct {
 	inviteUC    *uc.InviteSlack
 	sendgrid    *sendgrid.Sendgrid
 	fs          *firestore.Client
+	g           *gas.GAS
 }
 
 func NewInquiryHandler(fs *firestore.Client) *InquiryHandler {
 	s := slack.NewSlack()
+	g := gas.NewGAS()
 	return &InquiryHandler{
 		slackClient: &s,
 		inviteUC:    uc.NewInviteSlack(s),
 		sendgrid:    sendgrid.NewSendgrid(),
 		fs:          fs,
+		g:           &g,
 	}
 }
 
@@ -58,11 +62,23 @@ func (h *InquiryHandler) HandleInquiry() gin.HandlerFunc {
 			log.Printf("failed to add inquiry to firestore, err: %v\n", err)
 		}
 
+		var slackChannelURL string
 		if data.UseSlack {
-			h.handleSlack(data)
+			slackChannelURL = h.handleSlack(data)
 		} else {
 			h.handleMail(data)
 		}
+
+		go h.g.PostData(gas.InquiryData{
+			Firstname:       data.Firstname,
+			Lastname:        data.Lastname,
+			CompanyName:     data.CompanyName,
+			EmailAddress:    data.EmailAddress,
+			Purpose:         data.Purpose,
+			InquiryDetails:  data.InquiryDetails,
+			UseSlack:        data.UseSlack,
+			SlackChannelURL: slackChannelURL,
+		})
 
 		log.Printf("inquery process succeeded\n")
 		c.JSON(200, gin.H{
@@ -71,7 +87,7 @@ func (h *InquiryHandler) HandleInquiry() gin.HandlerFunc {
 	}
 }
 
-func (h InquiryHandler) handleSlack(data schema.InquiryData) {
+func (h InquiryHandler) handleSlack(data schema.InquiryData) string {
 	var guests []uc.GuestInfo
 	if *data.SlackInfo != nil {
 		guests = make([]uc.GuestInfo, 0, len(*data.SlackInfo)+1)
@@ -98,10 +114,13 @@ func (h InquiryHandler) handleSlack(data schema.InquiryData) {
 	inviteResult, err := h.inviteUC.Do(inviteInput)
 	if err != nil {
 		log.Printf("failed to invite slack, err: %v\n", err)
-		return
+	}
+	if inviteResult == nil {
+		return ""
 	}
 	log.Printf("channel created: %s\n", inviteResult.ChannelName)
 	log.Printf("channel link: %s\n", inviteResult.ChannelLink)
+	return inviteResult.ChannelLink
 }
 
 func (h InquiryHandler) handleMail(data schema.InquiryData) {

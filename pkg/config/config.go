@@ -13,6 +13,7 @@ type Config struct {
 	Slack    Slack    `yaml:"slack"`
 	SendGrid SendGrid `yaml:"sendgrid"`
 	OpenAI   OpenAI   `yaml:"openai"`
+	GAS      GAS      `yaml:"gas"`
 }
 
 type Slack struct {
@@ -33,6 +34,10 @@ type OpenAI struct {
 	BaseURL string `yaml:"baseurl"`
 	APIKey  string `yaml:"api_key"`
 	Model   string `yaml:"model"`
+}
+
+type GAS struct {
+	AppURL string `yaml:"app_url"`
 }
 
 func init() {

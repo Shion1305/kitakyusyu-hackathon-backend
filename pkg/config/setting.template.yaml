@@ -18,3 +18,5 @@ openai:
   frequency_penalty:
   presence_penalty:
   stop:
+gas:
+  app_url:

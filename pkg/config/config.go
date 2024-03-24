@@ -30,9 +30,9 @@ type SendGrid struct {
 }
 
 type OpenAI struct {
-	EndPoint string `yaml:"endpoint"`
-	APIKey   string `yaml:"api_key"`
-	Model    string `yaml:"model"`
+	BaseURL string `yaml:"baseurl"`
+	APIKey  string `yaml:"api_key"`
+	Model   string `yaml:"model"`
 }
 
 func init() {

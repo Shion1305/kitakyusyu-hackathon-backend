@@ -8,17 +8,22 @@ import (
 )
 
 type OpenAI struct {
-	endpoint string
-	apiKey   string
-	client   *openai.Client
+	baseurl string
+	apiKey  string
+	client  *openai.Client
 }
 
 func NewOpenAI() *OpenAI {
 	conf := config.Get()
+	openaiConf := openai.ClientConfig{
+		BaseURL:    conf.OpenAI.BaseURL,
+		APIType:    openai.APITypeAzureAD,
+		APIVersion: "2024-02-01",
+	}
 	return &OpenAI{
-		endpoint: conf.OpenAI.EndPoint,
-		apiKey:   conf.OpenAI.APIKey,
-		client:   openai.NewClient(conf.OpenAI.APIKey),
+		baseurl: conf.OpenAI.BaseURL,
+		apiKey:  conf.OpenAI.APIKey,
+		client:  openai.NewClientWithConfig(openaiConf),
 	}
 }
 

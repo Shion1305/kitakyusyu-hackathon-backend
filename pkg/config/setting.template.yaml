@@ -9,7 +9,7 @@ slack:
 sendgrid:
   api_key:
 openai:
-  endpoint:
+  baseurl:
   api_key:
   model:
   temperature:

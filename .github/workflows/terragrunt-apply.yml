@@ -21,6 +21,14 @@ jobs:
         with:
           aqua_version: v2.24.1
 
+      - name: Login to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: access_token
+          workload_identity_provider: 'projects/435876017528/locations/global/workloadIdentityPools/default-pool/providers/provider-github'
+          service_account: 'gh-terraform@kyusyu-hackathon.iam.gserviceaccount.com'
+
       - name: Terragrunt Init
         run: terragrunt run-all init
 
@@ -36,14 +44,6 @@ jobs:
                     -reporter=github-pr-review \
                     -filter-mode=nofilter \
                     -fail-on-error
-
-      - name: Login to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          token_format: access_token
-          workload_identity_provider: 'projects/435876017528/locations/global/workloadIdentityPools/default-pool/providers/provider-github'
-          service_account: 'gh-terraform@kyusyu-hackathon.iam.gserviceaccount.com'
 
       - name: Check terragrunt fmt
         working-directory: terragrunt/envs/dev
